@@ -145,7 +145,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
-  controlID: 70
+  controlID: 45
   draggingID: 0
 --- !u!114 &7
 MonoBehaviour:
@@ -872,7 +872,7 @@ MonoBehaviour:
   m_Rotation:
     m_Target: {x: 0.025218992, y: -0.94037014, z: 0.33159593, w: 0.07151819}
     speed: 2
-    m_Value: {x: 0.025218958, y: -0.9403689, z: 0.33159548, w: 0.07151809}
+    m_Value: {x: -0.025218993, y: 0.94037014, z: -0.33159593, w: -0.07151819}
   m_Size:
     m_Target: 297.219
     speed: 2
