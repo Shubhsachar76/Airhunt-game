@@ -3,6 +3,7 @@ import mediapipe as mp
 import socket
 import math
 import time
+#python Assets/scripts/hand_test.py to run this code
 
 # -------- MediaPipe --------
 mp_hands = mp.solutions.hands
