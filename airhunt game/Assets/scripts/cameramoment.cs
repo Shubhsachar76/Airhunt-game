@@ -22,10 +22,24 @@ public class CameraFromPython : MonoBehaviour
     int shootFlag = 0;
     int lastShootFlag = 0;
 
-    [Header("Sensitivity Settings")]
-    public float horizontalSensitivity = 400f;
-    public float verticalSensitivity = 350f;
+    float currentYaw = 0f;     // X axis (left/right)
+    float currentPitch = 0f;   // Y axis (up/down)
+
+    [Header("Sensitivity")]
+    public float xSensitivity = 400f;
+    public float ySensitivity = 350f;
     public float deadzone = 0.01f;
+
+    [Header("Neutral Offset (Comfort)")]
+    public float yNeutralOffset = 0f;
+
+    [Header("Y Axis Limits (Up/Down)")]
+    public float minYAngle = -60f;
+    public float maxYAngle = 70f;
+
+    [Header("X Axis Limits (Left/Right)")]
+    public float minXAngle = -120f;
+    public float maxXAngle = 120f;
 
     [Header("Shooting")]
     public float range = 100f;
@@ -57,7 +71,6 @@ public class CameraFromPython : MonoBehaviour
                 string[] parts = msg.Split(' ');
                 if (parts.Length < 23) continue;
 
-                // Landmark 8 (index tip slot)
                 string[] xy = parts[9].Split(',');
 
                 float.TryParse(xy[0], NumberStyles.Float, CultureInfo.InvariantCulture, out aimX);
@@ -78,8 +91,8 @@ public class CameraFromPython : MonoBehaviour
     {
         if (!handDetected) return;
 
-        // Calibrate once when hand first appears
-        if (!calibrated)
+        // Press R to recalibrate neutral pose anytime
+        if (Input.GetKeyDown(KeyCode.R) || !calibrated)
         {
             startX = aimX;
             startY = aimY;
@@ -87,18 +100,22 @@ public class CameraFromPython : MonoBehaviour
         }
 
         float deltaX = aimX - startX;
-        float deltaY = aimY - startY;
+        float deltaY = (aimY - startY) + yNeutralOffset;
 
-        // Deadzone to remove micro shaking
         if (Mathf.Abs(deltaX) < deadzone) deltaX = 0f;
         if (Mathf.Abs(deltaY) < deadzone) deltaY = 0f;
 
-        float yaw = deltaX * horizontalSensitivity;
-        float pitch = -deltaY * verticalSensitivity;
+        currentYaw = deltaX * xSensitivity;
 
-        transform.rotation = Quaternion.Euler(pitch, yaw, 0f);
+        // ✅ Correct direction (no minus sign now)
+        currentPitch = deltaY * ySensitivity;
 
-        // Shoot on fist close (0 → 1 transition)
+        currentYaw = Mathf.Clamp(currentYaw, minXAngle, maxXAngle);
+        currentPitch = Mathf.Clamp(currentPitch, minYAngle, maxYAngle);
+
+        transform.rotation = Quaternion.Euler(currentPitch, currentYaw, 0f);
+
+        // Shoot on fist close (0 → 1)
         if (shootFlag == 1 && lastShootFlag == 0)
         {
             Shoot();
