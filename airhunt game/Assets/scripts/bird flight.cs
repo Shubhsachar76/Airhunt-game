@@ -2,11 +2,16 @@ using UnityEngine;
 
 public class BirdFlight : MonoBehaviour
 {
+    [Header("Movement")]
     public float speed = 4f;
     public float bobHeight = 0.5f;
     public float bobSpeed = 2f;
 
-    private float direction;
+    [Header("Direction Change")]
+    public float directionChangeChance = 0.3f;
+    public float changeInterval = 2f;
+
+    private float direction = 1f;
     private float startY;
 
     public void SetDirection(float dir)
@@ -14,28 +19,37 @@ public class BirdFlight : MonoBehaviour
         direction = dir;
         startY = transform.position.y;
 
-        InvokeRepeating(nameof(RandomTurn), 1.5f, 2f);
+        // Start random direction changes
+        InvokeRepeating(nameof(RandomTurn), changeInterval, changeInterval);
     }
 
     void Update()
     {
-        // Move
+        // Move horizontally
         float x = transform.position.x + direction * speed * Time.deltaTime;
 
-        // Bob
+        // Vertical bobbing
         float y = startY + Mathf.Sin(Time.time * bobSpeed) * bobHeight;
 
         transform.position = new Vector3(x, y, transform.position.z);
 
-        // Face direction
-        transform.localScale = new Vector3(direction, 1, 1);
+        // Face direction using ROTATION (no flatten bug)
+        if (direction > 0)
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+        else
+            transform.rotation = Quaternion.Euler(0, 180, 0);
     }
 
     void RandomTurn()
     {
-        if (Random.value > 0.7f)
+        if (Random.value < directionChangeChance)
         {
             direction *= -1;
         }
+    }
+
+    void OnDestroy()
+    {
+        CancelInvoke(); // clean up (you’ll forget this otherwise)
     }
 }
