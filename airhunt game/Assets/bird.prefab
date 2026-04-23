@@ -514,6 +514,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3468380465266917833}
   - component: {fileID: 3869316335938791079}
+  - component: {fileID: 8574559385853531458}
+  - component: {fileID: 3852738405759512892}
   m_Layer: 0
   m_Name: bird
   m_TagString: Untagged
@@ -549,8 +551,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b8104cd4dcd39249bed18804af83f11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 10
-  lifeTime: 10
+  speed: 12
+  bobHeight: 0.5
+  bobSpeed: 2
+  directionChangeChance: 3
+  changeInterval: 20
+--- !u!114 &8574559385853531458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3976275077414278359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0592f3cc480221644b82d77ba8d493e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 50
+--- !u!65 &3852738405759512892
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3976275077414278359}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 22.69432, y: 28.357674, z: 17.189842}
+  m_Center: {x: -11.185225, y: -2.5262642, z: -9.100744}
 --- !u!1 &3988239351335672985
 GameObject:
   m_ObjectHideFlags: 0

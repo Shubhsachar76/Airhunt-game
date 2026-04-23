@@ -22,8 +22,8 @@ public class CameraFromPython : MonoBehaviour
     int shootFlag = 0;
     int lastShootFlag = 0;
 
-    float currentYaw = 0f;     // X axis (left/right)
-    float currentPitch = 0f;   // Y axis (up/down)
+    float currentYaw = 0f;
+    float currentPitch = 0f;
 
     [Header("Sensitivity")]
     public float xSensitivity = 400f;
@@ -32,6 +32,10 @@ public class CameraFromPython : MonoBehaviour
 
     [Header("Neutral Offset (Comfort)")]
     public float yNeutralOffset = 0f;
+
+    [Header("Invert")]
+    public bool invertY = false;
+    public bool invertX = false;
 
     [Header("Y Axis Limits (Up/Down)")]
     public float minYAngle = -60f;
@@ -91,7 +95,6 @@ public class CameraFromPython : MonoBehaviour
     {
         if (!handDetected) return;
 
-        // Press R to recalibrate neutral pose anytime
         if (Input.GetKeyDown(KeyCode.R) || !calibrated)
         {
             startX = aimX;
@@ -105,17 +108,14 @@ public class CameraFromPython : MonoBehaviour
         if (Mathf.Abs(deltaX) < deadzone) deltaX = 0f;
         if (Mathf.Abs(deltaY) < deadzone) deltaY = 0f;
 
-        currentYaw = deltaX * xSensitivity;
-
-        // ✅ Correct direction (no minus sign now)
-        currentPitch = deltaY * ySensitivity;
+        currentYaw = deltaX * xSensitivity * (invertX ? -1f : 1f);
+        currentPitch = deltaY * ySensitivity * (invertY ? -1f : 1f);
 
         currentYaw = Mathf.Clamp(currentYaw, minXAngle, maxXAngle);
         currentPitch = Mathf.Clamp(currentPitch, minYAngle, maxYAngle);
 
         transform.rotation = Quaternion.Euler(currentPitch, currentYaw, 0f);
 
-        // Shoot on fist close (0 → 1)
         if (shootFlag == 1 && lastShootFlag == 0)
         {
             Shoot();

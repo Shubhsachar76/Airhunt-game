@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3402010365594560}
   - component: {fileID: 932614117943673124}
   - component: {fileID: 4346044419728232222}
+  - component: {fileID: 8504846977346719718}
   m_Layer: 0
   m_Name: shooting wala camera
   m_TagString: MainCamera
@@ -109,9 +110,23 @@ MonoBehaviour:
   ySensitivity: 350
   deadzone: 0.01
   yNeutralOffset: 0
+  invertY: 0
+  invertX: 0
   minYAngle: -60
   maxYAngle: 70
   minXAngle: -120
   maxXAngle: 120
   range: 100
   damage: 50
+--- !u!114 &8504846977346719718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1050650993859796946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85f3f46f56ac86a43a799abc175aee22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
