@@ -13,7 +13,12 @@ hands = mp_hands.Hands(
     min_tracking_confidence=0.6
 )
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
+if not cap.isOpened():
+    cap = cv2.VideoCapture(0)
+if not cap.isOpened():
+    print("No camera found!")
+    exit()
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -71,18 +76,15 @@ try:
                 if result.multi_hand_landmarks:
                     lm = result.multi_hand_landmarks[0].landmark
 
-                    # ---- Use Palm Center (Stable, No Smoothing) ----
                     palm_x = (lm[0].x + lm[5].x + lm[17].x) / 3
                     palm_y = (lm[0].y + lm[5].y + lm[17].y) / 3
 
                     for i, p in enumerate(lm):
                         if i == 8:
-                            # Replace index tip with palm center
                             landmarks.append(f"{palm_x:.3f},{palm_y:.3f}")
                         else:
                             landmarks.append(f"{p.x:.3f},{p.y:.3f}")
 
-                    # ---- Shoot Logic ----
                     open_now = is_open(lm)
                     fist_now = is_fist(lm)
 

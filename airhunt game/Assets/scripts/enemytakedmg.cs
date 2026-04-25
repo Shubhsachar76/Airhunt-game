@@ -10,6 +10,10 @@ public class Target : MonoBehaviour
 
         if (health <= 0)
         {
+            CannonManager cm = FindObjectOfType<CannonManager>();
+            if (cm != null)
+                cm.OnBirdKilled();
+                
             Destroy(gameObject);
         }
     }
